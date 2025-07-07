@@ -11,4 +11,4 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: dexwritescode/release-on-merge-action@v1
+      - uses: flago/release-on-merge-action@v1
