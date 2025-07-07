@@ -2,16 +2,31 @@ package flago
 
 import (
 	"errors"
+	"os"
 )
 
 var ErrEmptyInput = errors.New("no valid input provided")
 
-func GetArgs(args []string, start int) (map[string]string, error) {
+func GetArgs() (map[string]string, error) {
+	args := os.Args
+
 	if len(args) == 0 {
 		return map[string]string{}, ErrEmptyInput
 	}
 
-	purgedArgs := args[start:]
+	return getPurgedArgs(args)
+}
+
+func getPurgedArgs(args []string) (map[string]string, error) {
+	if len(args) == 0 {
+		return map[string]string{}, ErrEmptyInput
+	}
+
+	purgedArgs := args[1:]
+
+	if len(purgedArgs) == 0 {
+		return map[string]string{}, ErrEmptyInput
+	}
 
 	if len(purgedArgs)%2 != 0 {
 		purgedArgs = append(purgedArgs, "")
