@@ -1,11 +1,9 @@
 package flago
 
 import (
-	"errors"
 	"os"
+	"strings"
 )
-
-var ErrEmptyInput = errors.New("no valid input provided")
 
 func GetArgs() (map[string]string, error) {
 	args := os.Args
@@ -35,7 +33,9 @@ func getPurgedArgs(args []string) (map[string]string, error) {
 	mappedArgs := make(map[string]string, len(purgedArgs)/2)
 
 	for index := 0; index < len(purgedArgs)-1; index += 2 {
-		mappedArgs[purgedArgs[index]] = purgedArgs[index+1]
+		argName := strings.TrimPrefix(purgedArgs[index], Dash)
+
+		mappedArgs[argName] = purgedArgs[index+1]
 	}
 
 	return mappedArgs, nil

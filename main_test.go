@@ -17,6 +17,7 @@ var ErrNotFound = errors.New("not found")
 var testCases = []TestScenario{
 	{"Simple", []string{"go_file_name", "alice", "1", "bob", "2", "charlie", "3"}, map[string]string{"alice": "1", "bob": "2", "charlie": "3"}},
 	{"Incomplete", []string{"go_file_name", "alice", "1", "bob", "2", "charlie"}, map[string]string{"alice": "1", "bob": "2", "charlie": ""}},
+	{"Remove Dash", []string{"go_file_name", "-alice", "1", "bob", "2", "-charlie"}, map[string]string{"alice": "1", "bob": "2", "charlie": ""}},
 }
 
 func TestGetArgs(t *testing.T) {
