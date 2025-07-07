@@ -11,4 +11,4 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: flago/release-on-merge-action@v1
+      - uses: cainlara/flago/release-on-merge-action@v1
