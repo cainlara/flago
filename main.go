@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"strconv"
 	"strings"
 )
 
@@ -123,7 +124,7 @@ func getArgsStructFromArgs(input map[string]any, outputPointer any, ignoreUnknow
 	val = val.Elem()
 
 	for key, value := range input {
-		fieldName := ToCamelCase(key)
+		fieldName := toCamelCase(key)
 		field := val.FieldByName(fieldName)
 
 		if !field.IsValid() {
@@ -132,18 +133,36 @@ func getArgsStructFromArgs(input map[string]any, outputPointer any, ignoreUnknow
 			}
 			continue
 		}
+
 		if !field.CanSet() {
 			return fmt.Errorf("cannot set field %s", fieldName)
 		}
 
-		fieldType := field.Type()
-		valType := reflect.TypeOf(value)
-
-		if valType == nil || !valType.AssignableTo(fieldType) {
-			return fmt.Errorf("cannot assign value of type %v to field %s (type %v)", valType, fieldName, fieldType)
+		valueStr, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("value for %s is not a string", fieldName)
 		}
 
-		field.Set(reflect.ValueOf(value))
+		fieldType := field.Type().Kind()
+
+		switch fieldType {
+		case reflect.String:
+			field.SetString(valueStr)
+		case reflect.Int:
+			intVal, err := strconv.Atoi(valueStr)
+			if err != nil {
+				return fmt.Errorf("invalid int value for %s: %v", fieldName, err)
+			}
+			field.SetInt(int64(intVal))
+		case reflect.Bool:
+			boolVal, err := strconv.ParseBool(valueStr)
+			if err != nil {
+				return fmt.Errorf("invalid bool value for %s: %v", fieldName, err)
+			}
+			field.SetBool(boolVal)
+		default:
+			return fmt.Errorf("unsupported field type %s for field %s", fieldType, fieldName)
+		}
 	}
 
 	return nil

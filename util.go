@@ -7,7 +7,7 @@ import (
 	"golang.org/x/text/language"
 )
 
-func ToCamelCase(input string) string {
+func toCamelCase(input string) string {
 	words := strings.Split(input, "_")
 	caser := cases.Title(language.English)
 
