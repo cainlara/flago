@@ -50,7 +50,7 @@ func TestGetArgsStructOk(t *testing.T) {
 		expected := config{"path/to/file", 100, true}
 		var actual config
 
-		input := map[string]any{"source": "path/to/file", "size": 100, "skip": true}
+		input := map[string]any{"source": "path/to/file", "size": "100", "skip": "true"}
 		err := getArgsStructFromArgs(input, &actual, false)
 		if err != nil && !isExpectedError(err) {
 			t.Errorf("Unexpected error: %v", err)
@@ -73,7 +73,7 @@ func TestGetArgsOkIgnoreFields(t *testing.T) {
 
 		var actual config
 
-		input := map[string]any{"source": "path/to/file", "size": 100, "skip": true}
+		input := map[string]any{"source": "path/to/file", "size": "100", "skip": "true"}
 		err := getArgsStructFromArgs(input, &actual, true)
 		if err != nil && !isExpectedError(err) {
 			t.Errorf("Unexpected error: %v", err)
@@ -99,7 +99,7 @@ func TestGetArgsStructFails(t *testing.T) {
 
 		var actual config
 
-		input := map[string]any{"source": "path/to/file", "size": 100, "skip": true}
+		input := map[string]any{"source": "path/to/file", "size": "100", "skip": "true"}
 		err := getArgsStructFromArgs(input, &actual, false)
 		if err != nil && !isExpectedError(err) {
 			t.Errorf("Unexpected error: %v", err)
